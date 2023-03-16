@@ -6,6 +6,7 @@ import { useLocalStorage } from "../customHooks/useStorage";
 const TodoApp = () => {
   const [title, setTitle] = useState("");
   const [todo, setTodo] = useLocalStorage("todoList", []);
+  const [complete, setComplete] = useState(false)
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -35,6 +36,12 @@ const TodoApp = () => {
         const temp = todo.filter((item) => item.id !== id);
         setTodo(temp);
     }
+    function handleCompleted(id){
+        const temp = [...todo]
+        const item = temp.find((item)=> item.id === id)
+        item.completed = complete
+        setTodo([...temp])
+    }
 
   return (
     <div className="todoContainer border">
@@ -51,7 +58,7 @@ const TodoApp = () => {
       </form>
       <div className="todoItem">
         {todo.map((item) => (
-          <Todo key={item.id} item={item} onUpdate={handleUpdate} onDelete={handleDelete} />
+          <Todo key={item.id} complete={complete} setComplete={setComplete} item={item} onComplete={handleCompleted} onUpdate={handleUpdate} onDelete={handleDelete} />
         ))}
       </div>
     </div>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import './todo.css'
 
-const Todo = ({item, onUpdate, onDelete}) => {
+const Todo = ({item, onUpdate, onDelete, onComplete, complete, setComplete}) => {
     const [isEdit, setIsEdit] =useState(false)
+
     
     function FormEdit(){
         const [newValue, setNewValue] = useState(item.title)
@@ -22,9 +24,14 @@ const Todo = ({item, onUpdate, onDelete}) => {
             <button className='button' onClick={handleClick}>update</button>
         </form>)
     }
-
+    
+    
     function TodoElement(){
-        return (<div className='todoInfo'><span className='todoTitle'>{item.title}</span><button className='button' onClick={() => setIsEdit(true)}>Edit</button><button className='buttonDelete' onClick={(e) => onDelete(item.id)}>Delete</button></div>)
+        function handleCheckClick(){
+            setComplete(!complete)
+            onComplete(item.id)
+        }
+        return (<div className='todoInfo'><span>{item.completed ? <i style={{color: 'green'}} class="bi bi-check"></i> : <i style={{color: 'red'}} class="bi bi-x"></i>}</span><span onClick={handleCheckClick} className='todoTitle'>{item.title}</span><button className='button' onClick={() => setIsEdit(true)}>Edit</button><button className='buttonDelete' onClick={(e) => onDelete(item.id)}>Delete</button></div>)
     }
     return(
         <div className='todo'>
